@@ -76,7 +76,24 @@ var Manager = function () {
         value: function getNext(delta) {
 
             var next = delta >= this.options.delta ? this.index - 1 : this.index + 1;
+
+            return this.checkLoop(next);
+        }
+    }, {
+        key: 'checkLoop',
+        value: function checkLoop(next) {
+
             return next < 0 ? this.options.loop ? this.length : 0 : next > this.length ? this.options.loop ? 0 : this.length : next;
+        }
+    }, {
+        key: 'getEvent',
+        value: function getEvent(index) {
+
+            return {
+                current: index,
+                previous: this.index,
+                direction: index >= this.index ? 'downwards' : 'upwards'
+            };
         }
     }, {
         key: 'onSwipe',
@@ -108,15 +125,21 @@ var Manager = function () {
             this.callback(e.keyCode == '38' ? this.options.delta + 1 : -(this.options.delta + 1));
         }
     }, {
+        key: 'goTo',
+        value: function goTo(index) {
+
+            var check = this.checkLoop(index);
+            var event = this.getEvent(index);
+
+            this.index = index;
+            this.options.callback(event);
+        }
+    }, {
         key: 'callback',
         value: function callback(delta) {
 
             var index = this.getNext(delta);
-            var event = {
-                current: index,
-                previous: this.index,
-                direction: index >= this.index ? 'downwards' : 'upwards'
-            };
+            var event = this.getEvent(index);
 
             this.index = index;
             this.options.callback(event);

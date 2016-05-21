@@ -52,7 +52,22 @@ export default class Manager {
     getNext(delta) {
         
         const next = delta >= this.options.delta ? this.index - 1 : this.index + 1 
+
+        return this.checkLoop(next)
+    }
+
+    checkLoop(next) {
+
         return next < 0 ? this.options.loop ? this.length : 0 : next > this.length ? this.options.loop ? 0 : this.length : next
+    }
+
+    getEvent(index) {
+
+        return {
+            current: index,
+            previous: this.index,
+            direction: index >= this.index ? 'downwards' : 'upwards'
+        }
     }
     
     onSwipe(e) {
@@ -80,15 +95,20 @@ export default class Manager {
         
         this.callback(e.keyCode == '38' ? this.options.delta+1 : -(this.options.delta+1))
     }
+    
+    goTo(index) {
+
+        const check = this.checkLoop(index)
+        const event = this.getEvent(index)
+
+        this.index = index
+        this.options.callback(event)
+    }
 
     callback(delta) {
         
         const index = this.getNext(delta)
-        const event = {
-            current: index,
-            previous: this.index,
-            direction: index >= this.index ? 'downwards' : 'upwards'
-        }
+        const event = this.getEvent(index)
         
         this.index = index
         this.options.callback(event)
