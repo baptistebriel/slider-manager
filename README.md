@@ -10,6 +10,7 @@
 
 ```javascript
 import Manager from 'slider-manager'
+import gsap from 'gsap'
 
 const slides = [].slice.call(document.querySelectorAll('.slides'))
 
