@@ -54,6 +54,7 @@ slider.init()
 ### methods
 
 - `init`: add event listeners
+- `goTo(index)`: goes to the slide index
 - `destroy`: remove event listeners
 
 ## License
