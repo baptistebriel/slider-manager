@@ -1,5 +1,6 @@
 import Hammer from 'hammerjs'
 import Hamster from 'hamsterjs'
+import sniffer from 'sniffer'
 import {on, off} from 'dom-event'
 
 export default class Manager {
@@ -8,7 +9,7 @@ export default class Manager {
 
         if(!opt.callback)
             console.error('You need to provide a callback function in the options')
-
+        
         this.el = opt.el || document.body
         this.animating = false
         
@@ -31,28 +32,34 @@ export default class Manager {
     
     init() {
         
-        this.hammer.add(new Hammer.Swipe())
-        this.hammer.on('swipe', this.onSwipe)
+        if(sniffer.isDevice) {
+            this.hammer.add(new Hammer.Swipe())
+            this.hammer.on('swipe', this.onSwipe)
+        }
 
-        this.hamster.wheel(this.onScroll)
-
-        on(document, 'keydown', this.onKeyDown)
+        if(sniffer.isDesktop) {
+            this.hamster.wheel(this.onScroll)
+            on(document, 'keydown', this.onKeyDown)
+        }
     }
 
     destroy() {
 
-        this.hammer.off('swipe', this.onSwipe)
-        this.hammer.destroy()
+        if(sniffer.isDevice) {
+            this.hammer.off('swipe', this.onSwipe)
+            this.hammer.destroy()
+        }
         
-        this.hamster.unwheel(this.onScroll)
-        
-        off(document, 'keydown', this.onKeyDown)
+        if(sniffer.isDesktop) {
+            this.hamster.unwheel(this.onScroll)
+            off(document, 'keydown', this.onKeyDown)
+        }
     }
 
     getNext(delta) {
         
         const next = delta >= this.options.delta ? this.index - 1 : this.index + 1 
-
+        
         return this.checkLoop(next)
     }
 

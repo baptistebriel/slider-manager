@@ -15,6 +15,10 @@ var _hamsterjs = require('hamsterjs');
 
 var _hamsterjs2 = _interopRequireDefault(_hamsterjs);
 
+var _sniffer = require('sniffer');
+
+var _sniffer2 = _interopRequireDefault(_sniffer);
+
 var _domEvent = require('dom-event');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -53,23 +57,29 @@ var Manager = function () {
         key: 'init',
         value: function init() {
 
-            this.hammer.add(new _hammerjs2.default.Swipe());
-            this.hammer.on('swipe', this.onSwipe);
+            if (_sniffer2.default.isDevice) {
+                this.hammer.add(new _hammerjs2.default.Swipe());
+                this.hammer.on('swipe', this.onSwipe);
+            }
 
-            this.hamster.wheel(this.onScroll);
-
-            (0, _domEvent.on)(document, 'keydown', this.onKeyDown);
+            if (_sniffer2.default.isDesktop) {
+                this.hamster.wheel(this.onScroll);
+                (0, _domEvent.on)(document, 'keydown', this.onKeyDown);
+            }
         }
     }, {
         key: 'destroy',
         value: function destroy() {
 
-            this.hammer.off('swipe', this.onSwipe);
-            this.hammer.destroy();
+            if (_sniffer2.default.isDevice) {
+                this.hammer.off('swipe', this.onSwipe);
+                this.hammer.destroy();
+            }
 
-            this.hamster.unwheel(this.onScroll);
-
-            (0, _domEvent.off)(document, 'keydown', this.onKeyDown);
+            if (_sniffer2.default.isDesktop) {
+                this.hamster.unwheel(this.onScroll);
+                (0, _domEvent.off)(document, 'keydown', this.onKeyDown);
+            }
         }
     }, {
         key: 'getNext',
@@ -151,7 +161,27 @@ var Manager = function () {
 
 exports.default = Manager;
 
-},{"dom-event":2,"hammerjs":3,"hamsterjs":4}],2:[function(require,module,exports){
+},{"dom-event":3,"hammerjs":4,"hamsterjs":5,"sniffer":6}],2:[function(require,module,exports){
+/*!
+ * dashify <https://github.com/jonschlinkert/dashify>
+ *
+ * Copyright (c) 2015 Jon Schlinkert.
+ * Licensed under the MIT license.
+ */
+
+'use strict';
+
+module.exports = function dashify(str) {
+  if (typeof str !== 'string') {
+    throw new TypeError('expected a string');
+  }
+  str = str.replace(/([a-z])([A-Z])/g, '$1-$2');
+  str = str.replace(/[ \t\W]/g, '-');
+  str = str.replace(/^-+|-+$/g, '');
+  return str.toLowerCase();
+};
+
+},{}],3:[function(require,module,exports){
 module.exports = on;
 module.exports.on = on;
 module.exports.off = off;
@@ -168,7 +198,7 @@ function off (element, event, callback, capture) {
   return callback;
 }
 
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 /*! Hammer.JS - v2.0.6 - 2015-12-23
  * http://hammerjs.github.io/
  *
@@ -2738,7 +2768,7 @@ if (typeof define === 'function' && define.amd) {
 
 })(window, document, 'Hammer');
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 /*
  * Hamster.js v1.1.2
  * (c) 2013 Monospaced http://monospaced.com
@@ -3067,5 +3097,86 @@ if (typeof window.define === 'function' && window.define.amd) {
 
 })(window, window.document);
 
-},{}]},{},[1])(1)
+},{}],6:[function(require,module,exports){
+'use strict';
+
+var dashify = require('dashify');
+
+module.exports = new Sniffer();
+
+function Sniffer() {
+    var ua = navigator.userAgent.toLowerCase();
+    var av = navigator.appVersion.toLowerCase();
+
+    var isDroidPhone = /android.*mobile/.test(ua);
+    var isDroidTablet = !isDroidPhone && (/android/i).test(ua);
+    var isDroid = isDroidPhone || isDroidTablet;
+
+    var isIos = (/ip(hone|od|ad)/i).test(ua) && !window.MSStream;
+    var isIpad = (/ipad/i).test(ua) && isIos;
+
+    var isTablet = isDroidTablet || isIpad;
+    var isPhone = isDroidPhone || (isIos && !isIpad);
+    var isDevice = isPhone || isTablet;
+
+    var isFirefox = ua.indexOf('firefox') > -1;
+    var isSafari = !!ua.match(/version\/[\d\.]+.*safari/);
+    var isOpera = ua.indexOf('opr') > -1;
+    var isIE11 = !(window.ActiveXObject) && "ActiveXObject" in window;
+    var isIE = av.indexOf('msie') > -1 || isIE11 || av.indexOf('edge') > -1;
+    var isEdge = ua.indexOf('edge') > -1;
+    var isChrome = window.chrome !== null && window.chrome !== undefined && navigator.vendor.toLowerCase() == 'google inc.' && !isOpera && !isEdge;
+
+    this.infos = {
+        isDroid: isDroid,
+        isDroidPhone: isDroidPhone,
+        isDroidTablet: isDroidTablet,
+        isIos: isIos,
+        isIpad: isIpad,
+        isDevice: isDevice,
+        isEdge: isEdge,
+        isIE: isIE,
+        isIE11: isIE11,
+        isPhone: isPhone,
+        isTablet: isTablet,
+        isFirefox: isFirefox,
+        isSafari: isSafari,
+        isOpera: isOpera,
+        isChrome: isChrome,
+        isDesktop: !isPhone && !isTablet
+    };
+
+    Object.keys(this.infos).forEach(function(info) {
+        Object.defineProperty(this, info, {
+            get: function () {
+                return this.infos[info];
+            }
+        });
+    }, this);
+
+    Object.freeze(this);
+
+    // TODO: add getVersion() to get IE/Safari/... version
+}
+
+Sniffer.prototype.addClasses = function(el) {
+    Object.keys(this.infos).forEach(function(info) {
+        if (this.infos[info]) addClass(el, dashify(info));
+    }, this);
+};
+
+Sniffer.prototype.getInfos = function() {
+    return clone(this.infos);
+};
+
+function addClass(el, className) {
+    if (el.addClass) el.addClass(className);
+    else if (el.classList) el.classList.add(className);
+    else el.className += ' ' + className;
+}
+
+function clone(source) {
+    return JSON.parse(JSON.stringify(source));
+}
+},{"dashify":2}]},{},[1])(1)
 });

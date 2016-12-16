@@ -1,6 +1,6 @@
 {
   "name": "slider-manager",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
   "main": "index.js",
   "license": "MIT",
@@ -10,9 +10,10 @@
     "url": "https://github.com/BaptisteBriel"
   },
   "dependencies": {
+    "dom-event": "npm-dom/dom-event",
     "hammerjs": "^2.0.6",
     "hamsterjs": "^1.1.2",
-    "dom-event": "npm-dom/dom-event"
+    "sniffer": "github:watsondg/sniffer"
   },
   "devDependencies": {
     "babel-preset-es2015": "^6.6.0",
