@@ -21,9 +21,9 @@ export default class Manager {
             delta: opt.delta || 1,
             callback: opt.callback
         }
-        
-        this.hamster = new Hamster(this.el)
-        this.hammer = new Hammer.Manager(this.el)
+
+        this.hamster = null
+        this.hammer = null
         
         this.onScroll = this.onScroll.bind(this)
         this.onSwipe = this.onSwipe.bind(this)
@@ -33,25 +33,29 @@ export default class Manager {
     init() {
         
         if(sniffer.isDevice) {
+            this.hammer = new Hammer.Manager(this.el)
             this.hammer.add(new Hammer.Swipe())
             this.hammer.on('swipe', this.onSwipe)
         }
-
+        
         if(sniffer.isDesktop) {
+            this.hamster = new Hamster(this.el)
             this.hamster.wheel(this.onScroll)
             on(document, 'keydown', this.onKeyDown)
         }
     }
-
+    
     destroy() {
-
+        
         if(sniffer.isDevice) {
             this.hammer.off('swipe', this.onSwipe)
             this.hammer.destroy()
+            this.hammer = null
         }
         
         if(sniffer.isDesktop) {
             this.hamster.unwheel(this.onScroll)
+            this.hamster = null
             off(document, 'keydown', this.onKeyDown)
         }
     }

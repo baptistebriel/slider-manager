@@ -45,8 +45,8 @@ var Manager = function () {
             callback: opt.callback
         };
 
-        this.hamster = new _hamsterjs2.default(this.el);
-        this.hammer = new _hammerjs2.default.Manager(this.el);
+        this.hamster = null;
+        this.hammer = null;
 
         this.onScroll = this.onScroll.bind(this);
         this.onSwipe = this.onSwipe.bind(this);
@@ -58,11 +58,13 @@ var Manager = function () {
         value: function init() {
 
             if (_sniffer2.default.isDevice) {
+                this.hammer = new _hammerjs2.default.Manager(this.el);
                 this.hammer.add(new _hammerjs2.default.Swipe());
                 this.hammer.on('swipe', this.onSwipe);
             }
 
             if (_sniffer2.default.isDesktop) {
+                this.hamster = new _hamsterjs2.default(this.el);
                 this.hamster.wheel(this.onScroll);
                 (0, _domEvent.on)(document, 'keydown', this.onKeyDown);
             }
@@ -74,10 +76,12 @@ var Manager = function () {
             if (_sniffer2.default.isDevice) {
                 this.hammer.off('swipe', this.onSwipe);
                 this.hammer.destroy();
+                this.hammer = null;
             }
 
             if (_sniffer2.default.isDesktop) {
                 this.hamster.unwheel(this.onScroll);
+                this.hamster = null;
                 (0, _domEvent.off)(document, 'keydown', this.onKeyDown);
             }
         }
