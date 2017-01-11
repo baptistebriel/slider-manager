@@ -18,7 +18,7 @@ export default class Manager {
 
         this.options = {
             loop: opt.loop || false,
-            delta: opt.delta || 5,
+            delta: opt.delta || 1,
             callback: opt.callback
         }
         
