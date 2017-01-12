@@ -112,7 +112,7 @@ export default class Manager {
         const check = this.checkLoop(index)
         const event = this.getEvent(index)
 
-        this.index = index
+        this.index = check
         this.options.callback(event)
     }
 
