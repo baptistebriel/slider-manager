@@ -78,10 +78,16 @@ export default class Manager {
         const prev = this.options.direction == 'y' ? 'up' : 'left'
         const next = this.options.direction == 'y' ? 'down' : 'right'
         
+        let direction = index > this.index ? next : prev
+        if (this.options.loop) {
+            if (this.index == 0 && index == this.length) direction = prev
+            if (this.index == this.length && index == 0) direction = next
+        }
+        
         return {
             current: index,
             previous: this.index,
-            direction: index >= this.index ? next : prev
+            direction: direction
         }
     }
     
