@@ -57,6 +57,10 @@ slider.init()
 - `goTo(index)`: goes to the slide index
 - `destroy`: remove event listeners
 
+### changelog
+
+- `1.0.6`: added direction to options, so it listens to either deltaX or deltaY depending on the desired option
+
 ## License
 
 MIT, see [LICENSE.md](http://github.com/BaptisteBriel/slider-manager/blob/master/LICENSE.md) for details.
