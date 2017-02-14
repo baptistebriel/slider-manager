@@ -122,7 +122,7 @@ var Manager = function () {
             if (this.animating || norm > -this.options.delta && norm < this.options.delta) return;
             this.animating = true;
 
-            this.callback(delta);
+            this.callback(norm);
         }
     }, {
         key: 'onScroll',
@@ -133,7 +133,7 @@ var Manager = function () {
             if (this.animating || norm > -this.options.delta && norm < this.options.delta) return;
             this.animating = true;
 
-            this.callback(delta);
+            this.callback(norm);
         }
     }, {
         key: 'onKeyDown',

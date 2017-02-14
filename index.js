@@ -72,7 +72,7 @@ export default class Manager {
 
         return next < 0 ? this.options.loop ? this.length : 0 : next > this.length ? this.options.loop ? 0 : this.length : next
     }
-
+    
     getEvent(index) {
 
         const prev = this.options.direction == 'y' ? 'up' : 'left'
@@ -92,7 +92,7 @@ export default class Manager {
         if(this.animating || norm > -this.options.delta && norm < this.options.delta) return
         this.animating = true
         
-        this.callback(delta)
+        this.callback(norm)
     }
     
     onScroll(event, delta, deltaX, deltaY) {
@@ -102,7 +102,7 @@ export default class Manager {
         if(this.animating || norm > -this.options.delta && norm < this.options.delta) return
         this.animating = true
         
-        this.callback(delta)
+        this.callback(norm)
     }
     
     onKeyDown(e) {
