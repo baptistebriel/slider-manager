@@ -67,7 +67,7 @@ export default class Manager {
         
         return this.checkLoop(next)
     }
-
+    
     checkLoop(next) {
 
         return next < 0 ? this.options.loop ? this.length : 0 : next > this.length ? this.options.loop ? 0 : this.length : next
