@@ -77,7 +77,7 @@ export default class Manager {
 
         const prev = this.options.direction == 'y' ? 'up' : 'left'
         const next = this.options.direction == 'y' ? 'down' : 'right'
-
+        
         return {
             current: index,
             previous: this.index,
@@ -96,7 +96,7 @@ export default class Manager {
     }
     
     onScroll(event, delta, deltaX, deltaY) {
-
+        
         const norm = this.options.direction == 'y' ? deltaY : deltaX
 
         if(this.animating || norm > -this.options.delta && norm < this.options.delta) return
@@ -113,7 +113,7 @@ export default class Manager {
         if(this.animating || e.keyCode != prev && e.keyCode != next) return
         this.animating = true
         
-        this.callback(e.keyCode == prev ? this.options.delta+1 : -(this.options.delta+1))
+        this.callback(e.keyCode == next ? this.options.delta+1 : -(this.options.delta+1))
     }
     
     goTo(index) {

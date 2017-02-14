@@ -145,7 +145,7 @@ var Manager = function () {
             if (this.animating || e.keyCode != prev && e.keyCode != next) return;
             this.animating = true;
 
-            this.callback(e.keyCode == prev ? this.options.delta + 1 : -(this.options.delta + 1));
+            this.callback(e.keyCode == next ? this.options.delta + 1 : -(this.options.delta + 1));
         }
     }, {
         key: 'goTo',
