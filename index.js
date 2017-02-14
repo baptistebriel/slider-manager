@@ -17,6 +17,7 @@ export default class Manager {
         this.length = opt.length
 
         this.options = {
+            direction: opt.direction || 'y',
             loop: opt.loop || false,
             delta: opt.delta || 1,
             callback: opt.callback
@@ -74,18 +75,21 @@ export default class Manager {
 
     getEvent(index) {
 
+        const prev = this.options.direction == 'y' ? 'up' : 'left'
+        const next = this.options.direction == 'y' ? 'down' : 'right'
+
         return {
             current: index,
             previous: this.index,
-            direction: index >= this.index ? 'downwards' : 'upwards'
+            direction: index >= this.index ? next : prev
         }
     }
     
     onSwipe(e) {
 
-        const delta = e.deltaY
+        const norm = this.options.direction == 'y' ? e.deltaY : e.deltaX
 
-        if(this.animating || delta > -this.options.delta && delta < this.options.delta) return
+        if(this.animating || norm > -this.options.delta && norm < this.options.delta) return
         this.animating = true
         
         this.callback(delta)
@@ -93,18 +97,23 @@ export default class Manager {
     
     onScroll(event, delta, deltaX, deltaY) {
 
-        if(this.animating || delta > -this.options.delta && delta < this.options.delta) return
+        const norm = this.options.direction == 'y' ? deltaY : deltaX
+
+        if(this.animating || norm > -this.options.delta && norm < this.options.delta) return
         this.animating = true
         
         this.callback(delta)
     }
     
     onKeyDown(e) {
+
+        const prev = this.options.direction == 'y' ? '38' : '37'
+        const next = this.options.direction == 'y' ? '40' : '39'
         
-        if(this.animating || e.keyCode != '38' && e.keyCode != '40') return
+        if(this.animating || e.keyCode != prev && e.keyCode != next) return
         this.animating = true
         
-        this.callback(e.keyCode == '38' ? this.options.delta+1 : -(this.options.delta+1))
+        this.callback(e.keyCode == prev ? this.options.delta+1 : -(this.options.delta+1))
     }
     
     goTo(index) {

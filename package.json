@@ -1,12 +1,12 @@
 {
   "name": "slider-manager",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "",
   "main": "index.js",
   "license": "MIT",
   "author": {
     "name": "Baptiste Briel",
-    "email": "b.briel@suspended-animations.com",
+    "email": "baptiste@sa-studio.fr",
     "url": "https://github.com/BaptisteBriel"
   },
   "dependencies": {
