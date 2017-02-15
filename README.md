@@ -47,6 +47,7 @@ slider.init()
 
 ### options
 
+- `direction`: 'x' or 'y'
 - `loop`: true of false
 - `delta`: delta limiter for scroll/touch events
 - `callback`: function called when user has swiped or scrolled
