@@ -158,7 +158,7 @@ var Manager = function () {
         value: function goTo(index) {
 
             var check = this.checkLoop(index);
-            var event = this.getEvent(index);
+            var event = this.getEvent(check);
 
             this.index = check;
             this.options.callback(event);
