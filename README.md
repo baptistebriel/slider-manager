@@ -47,9 +47,10 @@ slider.init()
 
 ### options
 
-- `direction`: 'x' or 'y'
-- `loop`: true of false
-- `delta`: delta limiter for scroll/touch events
+- `el`: HTMLElement to listen for scroll/touch events - defaults to document.body
+- `direction`: 'x' or 'y' - defaults to 'y'
+- `loop`: true of false - defaults to false
+- `delta`: delta limiter for scroll/touch events - defaults to 1
 - `callback`: function called when user has swiped or scrolled
 
 ### methods
