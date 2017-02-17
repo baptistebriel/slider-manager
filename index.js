@@ -60,10 +60,10 @@ export default class Manager {
             off(document, 'keydown', this.onKeyDown)
         }
     }
-
+    
     getNext(delta) {
         
-        const next = delta >= this.options.delta ? this.index - 1 : this.index + 1 
+        const next = delta >= this.options.delta ? this.index + 1 : this.index - 1 
         
         return this.checkLoop(next)
     }
@@ -98,7 +98,7 @@ export default class Manager {
         if(this.animating || norm > -this.options.delta && norm < this.options.delta) return
         this.animating = true
         
-        this.callback(norm)
+        this.callback(norm - (norm * 2))
     }
     
     onScroll(event, delta, deltaX, deltaY) {

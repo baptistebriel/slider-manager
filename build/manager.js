@@ -90,7 +90,7 @@ var Manager = function () {
         key: 'getNext',
         value: function getNext(delta) {
 
-            var next = delta >= this.options.delta ? this.index - 1 : this.index + 1;
+            var next = delta >= this.options.delta ? this.index + 1 : this.index - 1;
 
             return this.checkLoop(next);
         }
@@ -128,7 +128,7 @@ var Manager = function () {
             if (this.animating || norm > -this.options.delta && norm < this.options.delta) return;
             this.animating = true;
 
-            this.callback(norm);
+            this.callback(norm - norm * 2);
         }
     }, {
         key: 'onScroll',
