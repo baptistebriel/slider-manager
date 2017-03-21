@@ -108,7 +108,7 @@ export default class Manager {
         if(this.animating || norm > -this.options.delta && norm < this.options.delta) return
         this.animating = true
         
-        this.callback(norm)
+        this.callback(norm - (norm * 2))
     }
     
     onKeyDown(e) {
