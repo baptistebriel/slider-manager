@@ -104,8 +104,8 @@ var Manager = function () {
         key: 'getEvent',
         value: function getEvent(index) {
 
-            var prev = this.options.direction == 'y' ? 'up' : 'left';
-            var next = this.options.direction == 'y' ? 'down' : 'right';
+            var prev = this.options.direction == 'y' ? 'down' : 'left';
+            var next = this.options.direction == 'y' ? 'up' : 'right';
 
             var direction = index > this.index ? next : prev;
             if (this.options.loop) {

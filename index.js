@@ -75,8 +75,8 @@ export default class Manager {
     
     getEvent(index) {
 
-        const prev = this.options.direction == 'y' ? 'up' : 'left'
-        const next = this.options.direction == 'y' ? 'down' : 'right'
+        const prev = this.options.direction == 'y' ? 'down' : 'left'
+        const next = this.options.direction == 'y' ? 'up' : 'right'
         
         let direction = index > this.index ? next : prev
         if (this.options.loop) {
