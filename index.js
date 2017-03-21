@@ -75,8 +75,8 @@ export default class Manager {
     
     getEvent(index) {
 
-        const prev = this.options.direction == 'y' ? 'down' : 'right'
-        const next = this.options.direction == 'y' ? 'up' : 'left'
+        const prev = this.options.direction == 'y' ? 'up' : 'left'
+        const next = this.options.direction == 'y' ? 'down' : 'right'
         
         let direction = index > this.index ? next : prev
         if (this.options.loop) {
@@ -94,7 +94,7 @@ export default class Manager {
     onSwipe(e) {
 
         const norm = this.options.direction == 'y' ? e.deltaY : e.deltaX
-
+        
         if(this.animating || norm > -this.options.delta && norm < this.options.delta) return
         this.animating = true
         
@@ -103,12 +103,12 @@ export default class Manager {
     
     onScroll(event, delta, deltaX, deltaY) {
         
-        const norm = this.options.direction == 'y' ? deltaY : deltaX
-
+        const norm = this.options.direction == 'y' ? deltaY - (deltaY * 2) : deltaX
+        
         if(this.animating || norm > -this.options.delta && norm < this.options.delta) return
         this.animating = true
         
-        this.callback(norm - (norm * 2))
+        this.callback(norm)
     }
     
     onKeyDown(e) {

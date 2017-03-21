@@ -104,8 +104,8 @@ var Manager = function () {
         key: 'getEvent',
         value: function getEvent(index) {
 
-            var prev = this.options.direction == 'y' ? 'down' : 'right';
-            var next = this.options.direction == 'y' ? 'up' : 'left';
+            var prev = this.options.direction == 'y' ? 'up' : 'left';
+            var next = this.options.direction == 'y' ? 'down' : 'right';
 
             var direction = index > this.index ? next : prev;
             if (this.options.loop) {
@@ -134,12 +134,12 @@ var Manager = function () {
         key: 'onScroll',
         value: function onScroll(event, delta, deltaX, deltaY) {
 
-            var norm = this.options.direction == 'y' ? deltaY : deltaX;
+            var norm = this.options.direction == 'y' ? deltaY - deltaY * 2 : deltaX;
 
             if (this.animating || norm > -this.options.delta && norm < this.options.delta) return;
             this.animating = true;
 
-            this.callback(norm - norm * 2);
+            this.callback(norm);
         }
     }, {
         key: 'onKeyDown',
