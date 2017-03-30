@@ -1,7 +1,6 @@
-import Hammer from 'hammerjs'
 import vs from 'virtual-scroll'
 import sniffer from 'sniffer'
-import {on, off} from 'dom-event'
+import { on, off } from 'dom-event'
 
 export default class Manager {
     
@@ -25,39 +24,27 @@ export default class Manager {
         }
 
         this.vs = null
-        this.hammer = null
         
         this.onScroll = this.onScroll.bind(this)
-        this.onSwipe = this.onSwipe.bind(this)
         this.onKeyDown = this.onKeyDown.bind(this)
     }
     
     init() {
         
-        if(sniffer.isDevice) {
-            this.hammer = new Hammer.Manager(this.el)
-            this.hammer.add(new Hammer.Swipe())
-            this.hammer.on('swipe', this.onSwipe)
-        }
+        this.vs = new vs({ limitInertia: this.options.limitInertia })
+        this.vs.on(this.onScroll)
         
         if(sniffer.isDesktop) {
-            this.vs = new vs({ limitInertia: this.options.limitInertia })
-            this.vs.on(this.onScroll)
             on(document, 'keydown', this.onKeyDown)
         }
     }
     
     destroy() {
         
-        if(sniffer.isDevice) {
-            this.hammer.off('swipe', this.onSwipe)
-            this.hammer.destroy()
-            this.hammer = null
-        }
+        this.vs.off(this.onScroll)
+        this.vs = null
         
         if(sniffer.isDesktop) {
-            this.vs.off(this.onScroll)
-            this.vs = null
             off(document, 'keydown', this.onKeyDown)
         }
     }
@@ -92,21 +79,10 @@ export default class Manager {
         }
     }
     
-    onSwipe(e) {
-
-        const norm = this.options.direction == 'y' ? e.deltaY : e.deltaX
-        
-        if(this.animating || norm > -this.options.delta && norm < this.options.delta) return
-        this.animating = true
-        
-        this.callback(norm - (norm * 2))
-    }
-    
     onScroll(event) {
       
         const { deltaX, deltaY } = event
-        
-        const norm = this.options.direction == 'y' ? deltaY - (deltaY * 2) : deltaX
+        const norm = this.options.direction == 'y' ? deltaY - (deltaY * 2) : deltaX - (deltaX * 2)
         
         if(this.animating || norm > -this.options.delta && norm < this.options.delta) return
         this.animating = true
