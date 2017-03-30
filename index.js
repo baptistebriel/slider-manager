@@ -1,5 +1,5 @@
 import Hammer from 'hammerjs'
-import Hamster from 'hamsterjs'
+import vs from 'virtual-scroll'
 import sniffer from 'sniffer'
 import {on, off} from 'dom-event'
 
@@ -20,10 +20,11 @@ export default class Manager {
             direction: opt.direction || 'y',
             loop: opt.loop || false,
             delta: opt.delta || 1,
-            callback: opt.callback
+            callback: opt.callback,
+            limitInertia: opt.limitInertia || false
         }
 
-        this.hamster = null
+        this.vs = null
         this.hammer = null
         
         this.onScroll = this.onScroll.bind(this)
@@ -40,8 +41,8 @@ export default class Manager {
         }
         
         if(sniffer.isDesktop) {
-            this.hamster = new Hamster(this.el)
-            this.hamster.wheel(this.onScroll)
+            this.vs = new vs({ limitInertia: this.options.limitInertia })
+            this.vs.on(this.onScroll)
             on(document, 'keydown', this.onKeyDown)
         }
     }
@@ -55,8 +56,8 @@ export default class Manager {
         }
         
         if(sniffer.isDesktop) {
-            this.hamster.unwheel(this.onScroll)
-            this.hamster = null
+            this.vs.off(this.onScroll)
+            this.vs = null
             off(document, 'keydown', this.onKeyDown)
         }
     }
@@ -101,7 +102,9 @@ export default class Manager {
         this.callback(norm - (norm * 2))
     }
     
-    onScroll(event, delta, deltaX, deltaY) {
+    onScroll(event) {
+      
+        const { deltaX, deltaY } = event
         
         const norm = this.options.direction == 'y' ? deltaY - (deltaY * 2) : deltaX
         
