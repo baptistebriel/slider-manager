@@ -51,7 +51,7 @@ slider.init()
 - `direction`: 'x' or 'y' - defaults to 'y'
 - `loop`: true of false - defaults to false
 - `delta`: delta limiter for scroll/touch events - defaults to 1
-- `limitInertia`: if set to true, leverage the limitInertia option of `virtual-scroll` to distinguish between user-initiated and inertial scrolling. Prevents callback from firing multiple times per scroll - defaults to false.
+- `limitInertia`: if set to true, leverage the limitInertia option of [virtual-scroll](https://github.com/ayamflow/virtual-scroll) to distinguish between user-initiated and inertial scrolling. Prevents callback from firing multiple times per scroll - defaults to false.
 - `callback`: function called when user has swiped or scrolled
 
 ### methods
