@@ -42,6 +42,7 @@ export default class Manager {
     destroy() {
         
         this.vs.off(this.onScroll)
+        this.vs.destroy()
         this.vs = null
         
         if(sniffer.isDesktop) {

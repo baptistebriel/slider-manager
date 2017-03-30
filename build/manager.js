@@ -65,6 +65,7 @@ var Manager = function () {
         value: function destroy() {
 
             this.vs.off(this.onScroll);
+            this.vs.destroy();
             this.vs = null;
 
             if (_sniffer2.default.isDesktop) {
