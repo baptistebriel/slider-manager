@@ -117,6 +117,6 @@ export default class Manager {
         const event = this.getEvent(index)
         
         this.index = index
-        this.options.callback(event)
+        this.options.callback(event, delta)
     }
 }
