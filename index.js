@@ -20,7 +20,8 @@ export default class Manager {
             loop: opt.loop || false,
             delta: opt.delta || 1,
             callback: opt.callback,
-            limitInertia: opt.limitInertia || false
+            limitInertia: opt.limitInertia || false,
+            passive: opt.passive || undefined
         }
 
         this.vs = null
@@ -31,7 +32,11 @@ export default class Manager {
     
     init() {
         
-        this.vs = new vs({ limitInertia: this.options.limitInertia })
+        this.vs = new vs({
+            passive: this.options.passive,
+            limitInertia: this.options.limitInertia
+        })
+        
         this.vs.on(this.onScroll)
         
         if(sniffer.isDesktop) {

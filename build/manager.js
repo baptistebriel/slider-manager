@@ -40,7 +40,8 @@ var Manager = function () {
             loop: opt.loop || false,
             delta: opt.delta || 1,
             callback: opt.callback,
-            limitInertia: opt.limitInertia || false
+            limitInertia: opt.limitInertia || false,
+            passive: opt.passive || undefined
         };
 
         this.vs = null;
@@ -53,7 +54,11 @@ var Manager = function () {
         key: 'init',
         value: function init() {
 
-            this.vs = new _virtualScroll2.default({ limitInertia: this.options.limitInertia });
+            this.vs = new _virtualScroll2.default({
+                passive: this.options.passive,
+                limitInertia: this.options.limitInertia
+            });
+
             this.vs.on(this.onScroll);
 
             if (_sniffer2.default.isDesktop) {
